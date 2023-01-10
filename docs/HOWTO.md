@@ -1,4 +1,48 @@
-# HOWTO complete the Appointments project
+# Agenda HOWTO
+
+In this project you will build two Python classes,
+    `Appt` (a single scheduled appointment with a start time,
+    an end time, and a title) and `Agenda` (a list of `Appt`
+    objects).  
+When complete, your program will be able to read a text file that looks 
+like
+    this:
+```
+             2018-01-01 09:15 10:30 | drowsy
+             2018-01-01 10:15 11:20 | coffee
+             2018-01-01 11:30 12:00 | waking
+```
+
+and find any overlapping periods in the schedule:
+```
+            2018-01-01 10:15 10:30 |  drowsy and  coffee
+```
+
+## Objectives
+
+The primary purpose of this project is to learn to create Python classes,
+including:
+- Constructor methods to create objects of a class.
+- Special methods (also called _magic methods_)
+         that provide implementations for built-in functions like <kbd>str</kbd>
+         and operators like `<` and `==`. 
+
+Building on what you learned in CS 210, this project will also require you
+to think carefully about the logic of computing the intersection of two
+time periods, and _efficiently_ computing all the intersections
+among a collection of time periods.
+
+
+In addition you'll gain more familiarity with the style of development
+we are emphasizing in CS 211:
+
+- Step-by-step, incremental development in which each successful step
+ should allow your program to pass more tests.  But unlike the 
+`doctest` test cases we used in CS 210, in CS 211 our main project 
+files (like `appt.py`) will include only simple usage tests.  We will 
+create our main test suites in separate files, like `test_appt.py`. This 
+will permit us to build larger and more complex test suites without
+making our main project files impossible to read. 
 
 You will create a source file called `appt.py` 
 that defines two Python classes, 
@@ -42,7 +86,8 @@ if __name__ == "__main__":
 ```
 
 This code doesn't do anything useful yet, but 
-let's execute the test suite anyway. Execute test\_appt.py in PyCharm, or at the command line, like this:
+let's execute the test suite anyway. Execute test\_appt.py in PyCharm,
+or at the command line, like this:
 
 `$ python3 test_appt.py` 
 
@@ -52,7 +97,7 @@ The output should look somethine like this:
 Traceback (most recent call last):
   File "test_appt.py", line 3, in <module>
     from appt_io import parse_appt, parse_agenda, read_agenda
-  File "/Users/michal/Dropbox/20W-211/projects/dist/agenda/appt_io.py", line 13, in <module>
+  File "/your_cs211_projects/agenda/appt_io.py", line 13, in <module>
     def parse_appt(appt_text: str) -> appt.Appt:
 AttributeError: module 'appt' has no attribute 'Appt'
 ```
@@ -86,12 +131,15 @@ this time the output will look something like this:
 
 ```
 Traceback (most recent call last):
-  File "/Users/michal/Dropbox/19W-211/projects/appointments/test_appointment.py", line 3, in from appt_io import parse_appt, parse_agenda, read_agenda
-  File "/Users/michal/Dropbox/19W-211/projects/appointments/appt_io.py", line 38, in def read_agenda(file: Iterable[str]) -> appt.Agenda:
+  File "/your_cs211_projects/agenda/test_appointment.py", line 3, in 
+  from appt_io import parse_appt, parse_agenda, read_agenda
+  File "/your_cs211_projects/agenda/appt_io.py", line 38, in def 
+  read_agenda(file: Iterable[str]) -> appt.Agenda:
 AttributeError: module 'appt' has no attribute 'Agenda' 
 ```
 
-OK, same problem, we need a class Agenda. We'll just create a dummy one for now:
+OK, same problem, we need a class Agenda. We'll just create a dummy
+one for now:
 
 ```python
 class Agenda:
@@ -106,11 +154,11 @@ long list of errors. Progress!
 We'll ignore the tests of the Agenda class for 
 now and focus on completing the Appt class. 
 In the test suite we can see that TestAppt 
-is usng a function in `appt\_io.py` to create an 
+is usng a function in `appt_io.py` to create an 
 `Appt` object from a string. The function in 
-`appt\_io` in turn calls the constructor of 
+`appt_io` in turn calls the constructor of 
 `Appt`, which is the class we need to write. 
-The call in `parse\_appt` uses some functions 
+The call in `parse_appt` uses some functions 
 that are probably unfamiliar to build the 
 arguments to the constructor, but we don't need 
 to puzzle that out; we can see from the call
@@ -119,18 +167,29 @@ to puzzle that out; we can see from the call
 
 and from the example in the usage example
 
-`appt1 = Appt(datetime(2018, 3, 15, 13, 30), datetime(2018, 3, 15, 15, 30), "Early afternoon nap")` 
+```
+appt1 = Appt(datetime(2018, 3, 15, 13, 30), 
+             datetime(2018, 3, 15, 15, 30), 
+             "Early afternoon nap")
+```
 
 that the constructor should take two datetime objects and a string.
 
-datetime objects are defined in a Python library module, so before we can make use of them, we need to _import_ that module into appt.py. The import statement comes after the file's main docstring and before other code. We want to import the datetime class from datetime.py. The from form of import allows us to do that and then refer to the class datetime in the rest of the file without qualifying it as datetime.datetime:
+datetime objects are defined in a Python library module,
+so before we can make use of them, we need to _import_ that
+module into appt.py. The import statement comes after the file's
+main docstring and before other code. We want to import the datetime
+class from datetime.py. The from form of import allows us to do 
+that and then refer to the class datetime in the rest of the file 
+without qualifying it as datetime.datetime:
 
 `from datetime import datetime` 
 
 Since this module will use datetime objects throughout, 
 you should spend a few minutes reading documentation for 
 that class. 
-If [https://docs.python.org/3/library/index.html](https://docs.python.org/3/library/index.html) 
+If [https://docs.python.org/3/library/index.html](
+https://docs.python.org/3/library/index.html) 
 isn't already bookmarked in your browser, it should be. 
 Search for _datetime_ and follow the link.
 
@@ -189,11 +248,11 @@ The last result above is not because pythons,
 being long skinny creatures themselves,  
 like squids better 
 than octopods.  It is because `s` comes after 
-`o` in the alphabet. 
+`o` in "collation order" (consistent with alphabetical order).
 
 The datetime class has defined methods for 
 comparing datetime objects. We need to do the 
-same thing for Appt objects. In the test suite 
+same thing for `Appt` objects. In the test suite 
 in `test_appts.py`, we can see that test case 
 `test_00_equality` and `test_01_order` compare 
 appointments using
@@ -609,9 +668,19 @@ appointments, and so on. The total running
 time would be O(n^2) where n is the number of 
 appointments. We must do better.
 
-The requirement for time O(n lg n) (called log-linear time) is a hint of a better method. That just happens to be the efficiency of the best comparison-based sorting methods. It is, in particular, the efficiency of the sort method of the Python list class. Also, this sort method is even faster for lists that are already in order. In that case it runs in time O(n), where n is the length of the list. This means there is little penalty for sorting a list that is already sorted.
+The requirement for time O(n lg n) (called log-linear time)
+is a hint of a better method. That just happens to be the
+efficiency of the best comparison-based sorting methods. It is,
+in particular, the efficiency of the sort method of the Python list
+class. Also, this sort method is even faster for lists that are
+already in order. In that case it runs in time O(n), where n is
+the length of the list. This means there is little penalty for
+sorting a list that is already sorted.
 
-We can make the conflict-finding method much more efficient if we start by putting the Appt objects in order by start time. But this will be a _side effect_ of the conflicts method, so we'd better note that in the docstring:
+We can make the conflict-finding method much more efficient if we
+start by putting the Appt objects in order by start time. But this
+will be a _side effect_ of the conflicts method, so we'd better note
+that in the docstring:
 
 ```python
 def conflicts(self) -> 'Agenda':
@@ -783,17 +852,19 @@ You should turn in one file, `appt.py`.
 
 ### Don't risk cheating
 
-The academic integrity rules for CIS 211 
+The academic integrity rules for CS 211 
 are very strict, and we take them very 
 seriously.  Suspected violations are reported 
 to the appropriate UO office, and the penalty 
 for plagiarism includes failing the course. 
 If you consulted with anyone other than the 
-instructional staff of CIS 211 (the instructor, 
+instructional staff of CS 211 (the instructor, 
 graduate teaching assistants, and undergraduate 
 learning assistants) to complete the program, 
 you must explicitly credit them in the docstring
 comment.  If you referred to any example code aside 
 from the provided documentation and the 
 Python library documentation, you 
-must explicitly cite it.
+must explicitly cite it.  I hope to see many credits in the projects 
+you turn in, because you learn more and better when you collaborate to
+teach and learn from each other. 
