@@ -1,7 +1,16 @@
 # Agenda
 
-Project starter code for CIS 211, Introduction to Computer Science II, 
+Project starter code for CS 211, Introduction to Computer Science II, 
 University of Oregon. 
+
+## Objectives
+
+Initial practice creating classes and objects, including wrappers 
+(`Agenda` is a wrapper for `list`).  Initial experience with a test 
+suite in a separate file (`test_appts.py`).  Introduction to _magic 
+methods_, which for example make `<` mean _before_.   Careful 
+algorithm design. 
+
 
 ## What it does 
 
