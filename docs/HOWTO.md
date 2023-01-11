@@ -631,7 +631,7 @@ important to make it useful.
 ```
 
 The other important method we need is one 
-to produce a list of conflicts. If 
+to produce a list of conflicts.
 If the list of conflicts is wrapped in another 
 `Agenda` object, then the `len` method of `Agenda`
 suffices for distinguishing whether or not an 
