@@ -27,6 +27,10 @@ including:
          that provide implementations for built-in functions like <kbd>str</kbd>
          and operators like `<` and `==`. 
 
+The `Agenda` class will be what we call a _wrapper_ class,
+wrapping a `list` object and delegating many method calls
+to its wrapped `list` of `Appt` objects. 
+
 Building on what you learned in CS 210, this project will also require you
 to think carefully about the logic of computing the intersection of two
 time periods, and _efficiently_ computing all the intersections
@@ -56,7 +60,7 @@ progress on the `Appt` and `Agenda` classes,
 respectively, as you work through the project. 
 
 Although you will build appt.py from scratch, 
-many parts are provided for you in the instructions 
+some parts are provided for you in the instructions 
 below.
 
 ## Skeleton of appt.py
@@ -64,7 +68,10 @@ below.
 Start by creating a docstring for the file. 
 Indicate your name and briefly describe what 
 this Python source file provides (which is the classes 
-`Appt` and `Agenda`).
+`Appt` and `Agenda`).  If you are working with classmates
+on this project, credit them now; otherwise you can add
+credits later if you get outside help or draw from external
+sources (aside from your instructional team or text).
 
 `Appt` objects will record the dates and times 
 that appointments begin and end using a 
@@ -74,6 +81,15 @@ like this:
 
 ```python
 from datetime import datetime
+```
+
+> [!TIP]
+> This line can be confusing because the module `datetime` and the class `datetime`, which are distinct, have the same name. 
+`datetime` is a very old module.  
+If `datetime` were following modern Python naming conventions the class `datetime` would be instead called `DateTime` (CamelCase, lumpy), and we would be writing 
+
+```python
+from datetime import DateTime  # We wish
 ```
 
 At the end of the file,  create the code to 
@@ -86,12 +102,40 @@ if __name__ == "__main__":
 ```
 
 This code doesn't do anything useful yet, but 
-let's execute the test suite anyway. Execute test\_appt.py in PyCharm,
-or at the command line, like this:
+let's execute the test suite anyway. Execute `test_appt.py` in your IDE, or at the command line. 
+
+### Running in your IDE
+
+An interactive development environment like VS Code or PyCharm, or even IDLE, provides some basic automation for running Python programs.  In VS Code, the simplest way to run code from the 
+ file you are currently editing is with the "run and debug" button on the left margin.  
+
+![VS Code debug the current file](img/vscode_run_current.png)
+
+If you are prompted to choose among debuggers, choose a Python debugger. 
+
+You can also run Python from the command line in a VS Code terminal window.  Running Python from the command line gives you a little more flexibility, including running a main module that you are not currently editing, or adding command line options.  In this case we would like to execute a test module that we are not currently editing as our "main program".  For this we will need a "terminal window" in which to use the command line.  You can create one using the "terminal" menu. 
+
+![Create a terminal window from the VS Code menu](
+    img/vscode_new_terminal.png
+)
+
+This will create a terminal window with a command line and a menu showing currently available terminal windows. 
+
+![VS Code terminal window](
+    img/vscode_terminal_window.png)
+
+The exact command (`python` or `python3` or `py`) will depend on your operating system and how you installed Python.  On my MacOS system, the command to run module `test_appt.py` using the Python version 3 system (and not the obsolete Python version 2.7) is: 
 
 `$ python3 test_appt.py` 
 
-The output should look somethine like this:
+You can configure VS Code or Pycharm to automate more complex run configurations, including running a test program while you are editing a different file.  The details depend on which IDE you are using and also on your operating system.  Some basic instructions for
+[running Python from an IDE](
+    https://uo-cs-oer.github.io/CS211-text/Appendices/appendix_ide_running.html)
+are provided in an appendix to our text. 
+
+### Interpreting the error message
+
+Whether we run `test_appt.py` from VS Code or from PyCharm, the output should look somethine like this:
 
 ```text
 Traceback (most recent call last):
@@ -131,15 +175,14 @@ this time the output will look something like this:
 
 ```
 Traceback (most recent call last):
-  File "/your_cs211_projects/agenda/test_appointment.py", line 3, in 
+  File "/your_cs211_projects/agenda/test_appt.py", line 3, in 
   from appt_io import parse_appt, parse_agenda, read_agenda
   File "/your_cs211_projects/agenda/appt_io.py", line 38, in def 
   read_agenda(file: Iterable[str]) -> appt.Agenda:
 AttributeError: module 'appt' has no attribute 'Agenda' 
 ```
 
-OK, same problem, we need a class Agenda. We'll just create a dummy
-one for now:
+OK, same problem, we need a class Agenda. We'll just create a stub for now:
 
 ```python
 class Agenda:
@@ -153,13 +196,13 @@ long list of errors. Progress!
 
 We'll ignore the tests of the Agenda class for 
 now and focus on completing the Appt class. 
-In the test suite we can see that TestAppt 
+In the test suite we can see that `TestAppt`
 is usng a function in `appt_io.py` to create an 
 `Appt` object from a string. The function in 
 `appt_io` in turn calls the constructor of 
 `Appt`, which is the class we need to write. 
 The call in `parse_appt` uses some functions 
-that are probably unfamiliar to build the 
+that may be unfamiliar to build the 
 arguments to the constructor, but we don't need 
 to puzzle that out; we can see from the call
 
@@ -167,25 +210,17 @@ to puzzle that out; we can see from the call
 
 and from the example in the usage example
 
-```
+```python3
 appt1 = Appt(datetime(2018, 3, 15, 13, 30), 
              datetime(2018, 3, 15, 15, 30), 
              "Early afternoon nap")
 ```
 
-that the constructor should take two datetime objects and a string.
+that the constructor should take two `datetime` objects and a string.
 
-datetime objects are defined in a Python library module,
-so before we can make use of them, we need to _import_ that
-module into appt.py. The import statement comes after the file's
-main docstring and before other code. We want to import the datetime
-class from datetime.py. The from form of import allows us to do 
-that and then refer to the class datetime in the rest of the file 
-without qualifying it as datetime.datetime:
+Recall that we imported the `datetime` class from the `datetime` module at the beginning of the module we are constructing.  We used `from ... import ...` syntax so that we can then  refer to the class datetime in the rest of the file without qualifying it as `datetime.datetime`.
 
-`from datetime import datetime` 
-
-Since this module will use datetime objects throughout, 
+Since this module will use `datetime` objects throughout, 
 you should spend a few minutes reading documentation for 
 that class. 
 If [https://docs.python.org/3/library/index.html](
@@ -195,8 +230,8 @@ Search for _datetime_ and follow the link.
 
 Now we can create the constructor method and 
 specify that two of its arguments should be 
-datetime objects. The constructor method 
-(which is always called `__init__` in Python) 
+`datetime` objects. The constructor method, 
+which is always called `__init__` in Python, 
 should look like this:
 
 ```python
@@ -218,13 +253,13 @@ The `Appt` constructor checks its precondition
 and crashes immediately, 
 in a predictable way, if it is violated. 
 This is much better than silently accepting bad 
-data and then crashing or giving erroneous results 
-later in some unpredictable manner.
+data and then unpredictably crashing or giving erroneous results 
+later.
 
 How is that comparison `finish > start` working? 
 How does Python know how to compare two datetime 
 objects? It's magic! No, really. It uses a trick 
-called “magic methods” Officially they are called 
+called “magic methods.”  Officially they are called 
 “special methods”, but everyone calls them 
 “magic methods”. 
 
@@ -245,13 +280,17 @@ True
 ```
 
 The last result above is not because pythons, 
-being long skinny creatures themselves,  
+being long skinny creatures themselves,
 like squids better 
 than octopods.  It is because `s` comes after 
-`o` in "collation order" (consistent with alphabetical order).
+`o` in "collation order". 
+Collation order is based on the underlying numerical
+representation of characters.  It is consistent with
+alphabetical order as long as we are just comparing
+lower case letters with other lower case letters, or digits with other digits. 
 
-The datetime class has defined methods for 
-comparing datetime objects. We need to do the 
+The `datetime` class contains methods for 
+comparing `datetime` objects. We need to do the 
 same thing for `Appt` objects. In the test suite 
 in `test_appts.py`, we can see that test case 
 `test_00_equality` and `test_01_order` compare 
@@ -284,21 +323,27 @@ is from 10am to 11:30am, and class starts at
 11am, then my meeting is not _before_ my class 
 even though it starts earlier. If two appointments 
 overlap, we will say that neither one is before 
-(<) the other.
+(`<`) the other.
 
 For appointments, the operations you need are:
 
 * `<` : 
-“before”. Appointment _a_ is before appointment _b_ iff the finish time of _a_ is equal or earlier than the start time of _b_. Magic method name is \_\_lt\_\_ ,
+“before”. Appointment _a_ is before appointment _b_ iff the finish time of _a_ is equal or earlier than the start time of _b_. Magic method name is `__lt__`.
 
 * `>` : 
-“after”. Appointment _a_ is after appointment _b_ iff the start time of _a_ is equal or after the finish time of _b_. Magic method name is \_\_gt\_\_ .
+“after”. Appointment _a_ is after appointment _b_ iff the start time of _a_ is equal or after the finish time of _b_. Magic method name is `__gt__` .   Although this method is not complex, it is a good idea to make it a [derived comparison](
+    https://uo-cs-oer.github.io/CS211-text/01-Objects/01_2_Magic.html#comparisons)
+using the `<` operation you defined above and the intended equivalence
+ of `a > b` with `b < a`.  This won't significantly shorten or simplify
+  your code, but it ensures that if we were to change the definition of
+   `<` in the future, the
+relation between `<` and `>` would be maintained. 
 
 * `==` : 
-“equal”. We say that two appointments are equal if they have the same start and end times, _even if they have different titles._ Magic method name is \_\_eq\_\_ .
+“equal”. We say that two appointments are equal if they have the same start and end times, _even if they have different titles._ Magic method name is `__eq__` .
 
 * `!=` : 
-“not equal”. You do not need to implement a magic method for !=. Python calls the the \_\_eq\_\_ method and negates the result.
+“not equal”. You do not need to implement a magic method for `!=`. Python calls the the `__eq__`  method and negates the result.
 
 Here is an implementation of `__eq__`:
 
@@ -327,21 +372,7 @@ Tests `test_00_equality` and `test_01_order`
 should now be passing. 
 Tests `test_02_overlap` and `test_03_intersect` 
 check methods we have not yet implemented.
-If we set up a PyCharm configuraton with the -v 
-option, 
 
-![config](img/config-unittests.png)
-
-we can see a list of the passing and failing 
-test cases before details of the (many) errors: 
-
-``` 
-/usr/local/bin/python3.8 /Users/michal/Dropbox/20W-211/projects/dist/agenda/test_appt.py -v
-test_00_equality (__main__.TestAppt) ... ok
-test_01_order (__main__.TestAppt) ... ok
-test_02_overlap (__main__.TestAppt) ... ERROR
-test_03_intersect (__main__.TestAppt) ... ERROR
-```
 
 ### Checking for overlapping appointments
 
@@ -396,7 +427,8 @@ helps to draw pictures.  We can identify four
 different relations among start and end times of 
 two appointments (or more if we consider equality): 
 
-![](img/intersect-cases.png)
+![Cases to consider when intersecting appointments](
+    img/intersect-cases.png)
 
 While we can identify these four cases, 
 we do *not* want to write different code 
