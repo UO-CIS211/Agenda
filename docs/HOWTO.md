@@ -86,7 +86,7 @@ from datetime import datetime
 > [!TIP]
 > This line can be confusing because the module `datetime` and the class `datetime`, which are distinct, have the same name. 
 `datetime` is a very old module.  
-If `datetime` were following modern Python naming conventions the class `datetime` would be instead called `DateTime` (CamelCase, lumpy), and we would be writing 
+> If `datetime` were following modern Python naming conventions the class `datetime` would be instead called `DateTime` (CamelCase, lumpy), and we would be writing 
 
 ```python
 from datetime import DateTime  # We wish
@@ -106,32 +106,13 @@ let's execute the test suite anyway. Execute `test_appt.py` in your IDE, or at t
 
 ### Running in your IDE
 
-An interactive development environment like VS Code or PyCharm, or even IDLE, provides some basic automation for running Python programs.  In VS Code, the simplest way to run code from the 
- file you are currently editing is with the "run and debug" button on the left margin.  
-
-![VS Code debug the current file](img/vscode_run_current.png)
-
-If you are prompted to choose among debuggers, choose a Python debugger. 
-
-You can also run Python from the command line in a VS Code terminal window.  Running Python from the command line gives you a little more flexibility, including running a main module that you are not currently editing, or adding command line options.  In this case we would like to execute a test module that we are not currently editing as our "main program".  For this we will need a "terminal window" in which to use the command line.  You can create one using the "terminal" menu. 
-
-![Create a terminal window from the VS Code menu](
-    img/vscode_new_terminal.png
-)
-
-This will create a terminal window with a command line and a menu showing currently available terminal windows. 
-
-![VS Code terminal window](
-    img/vscode_terminal_window.png)
-
-The exact command (`python` or `python3` or `py`) will depend on your operating system and how you installed Python.  On my MacOS system, the command to run module `test_appt.py` using the Python version 3 system (and not the obsolete Python version 2.7) is: 
-
-`$ python3 test_appt.py` 
-
-You can configure VS Code or Pycharm to automate more complex run configurations, including running a test program while you are editing a different file.  The details depend on which IDE you are using and also on your operating system.  Some basic instructions for
-[running Python from an IDE](
-    https://uo-cs-oer.github.io/CS211-text/Appendices/appendix_ide_running.html)
-are provided in an appendix to our text. 
+An interactive development environment like VS Code or PyCharm, or even
+IDLE, provides some basic automation for running Python programs.  
+Configuration and details of running in VS Code or Pycharm depend 
+partly on your operating system and configuration.  Our text has an 
+appendix on [running Python from the command line or your IDE](
+https://uo-cs-oer.github.io/CS211-text/Appendices/appendix_ide_running.html
+).
 
 ### Interpreting the error message
 
